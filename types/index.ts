@@ -1,5 +1,5 @@
 export interface User {
-  id: number;
+  id: number |string;
   name: string;
   email: string;
   role: "student" | "admin" | "instructor";
@@ -15,8 +15,8 @@ export interface Course {
 }
 
 export interface Submission {
-  id: number;
-  studentId: number;
+  id: number | string;
+  studentId?: number | string;
   courseCode: string;
   repoUrl: string;
   submittedAt: Date;
