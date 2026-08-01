@@ -6,7 +6,7 @@ import SubmissionBadge from "./components/SubmissionBadge";
 import useToggle from "./hooks/useToggle";
 import usePrevious from "./hooks/usePrevious";
 
-// ===== MOCK DATA (used inside useEffect, NOT directly in JSX) =====
+// ===== MOCK DATA =====
 const mockUsers: User[] = [
   {
     id: 1,
@@ -17,16 +17,9 @@ const mockUsers: User[] = [
   },
   {
     id: 2,
-    name: "Jane Paray",
-    email: "jane.paray@example.com",
+    name: "Ana Rosa Santos",
+    email: "anarosa@example.com",
     role: "student",
-    isActive: true,
-  },
-  {
-    id: 3,
-    name: "Clare Mari Katigbak",
-    email: "clare.mari@example.com",
-    role: "instructor",
     isActive: true,
   },
 ];
@@ -44,12 +37,6 @@ const mockCourses: Course[] = [
     units: 3,
     semester: "1st Semester 2026-2027",
   },
-  {
-    code: "CAPROJ 2",
-    title: "CAPROJ 2",
-    units: 3,
-    semester: "1st Semester 2026-2027",
-  },
 ];
 
 const mockSubmission: Submission = {
@@ -62,104 +49,154 @@ const mockSubmission: Submission = {
 };
 
 function App() {
-  // ===== 1. TYPED STATE WITH useState<T> (Requirement: 2+ pieces) =====
+  // ===== STATE =====
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [submission, setSubmission] = useState<Submission | null>(null);
 
-  // ===== 3. TYPED DOM REFERENCE WITH useRef (Requirement) =====
+  // ===== REFS & CUSTOM HOOKS =====
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // ===== 5. CUSTOM HOOKS (Requirement: 2 hooks) =====
   const [showDetails, toggleDetails] = useToggle(false);
+  const [isDarkMode, toggleDarkMode] = useToggle(false);
   const previousSearch = usePrevious(searchTerm);
 
-  // ===== 2. LOAD MOCK DATA WITH useEffect (Requirement) =====
+  // ===== EFFECT =====
   useEffect(() => {
-    // Simulates an API call with setTimeout
     setTimeout(() => {
       setUsers(mockUsers);
       setCourses(mockCourses);
       setSubmission(mockSubmission);
       setIsLoading(false);
-
-      // Focus the search input after data loads
       searchInputRef.current?.focus();
     }, 500);
   }, []);
 
-  // ===== 4. TYPED onChange HANDLER (Requirement) =====
+  // ===== HANDLERS =====
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSearchTerm(e.target.value);
   };
 
-  // Derived value — recomputed every render, NOT stored in state
+  // ===== DERIVED VALUES =====
   const filteredCourses = courses.filter((c) =>
-    c.title.toLowerCase().includes(searchTerm.toLowerCase())
+    c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Show loading state while data is being "fetched"
+  // ===== STYLED EARLY RETURNS =====
   if (isLoading) {
-    return <p>Loading courses...</p>;
+    return (
+      <div className="min-h-screen bg-gray-50 p-6 dark:bg-gray-900">
+        <div className="animate-pulse p-6 text-gray-500 dark:text-gray-400">
+          Loading courses...
+        </div>
+      </div>
+    );
   }
 
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6 dark:bg-gray-900">
+        <div className="m-6 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900 dark:text-red-200">
+          Could not load courses. Please try again.
+        </div>
+      </div>
+    );
+  }
+
+  // ===== RENDER =====
   return (
-    <main style={{ fontFamily: "Arial, sans-serif", padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-      <h1>GT2 Part 2: React Hooks + State</h1>
+    <div className={isDarkMode ? "dark" : ""}>
+      <div className="min-h-screen bg-gray-50 p-6 dark:bg-gray-900">
+        <div className="mx-auto max-w-6xl">
+          <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+            GT2 Part 3: Tailwind CSS + UI Polish
+          </h1>
 
-      {/* Search input wired to useRef + useState + typed onChange */}
-      <input
-        ref={searchInputRef}
-        value={searchTerm}
-        type="text"
-        placeholder="Search courses..."
-        onChange={handleSearchChange}
-        style={{ padding: "0.5rem", width: "100%", marginBottom: "1rem" }}
-      />
+          {/* Control Buttons */}
+          <div className="mb-4 flex gap-2">
+            <button
+              onClick={toggleDarkMode}
+              className="rounded bg-gray-800 px-3 py-1.5 text-sm text-white dark:bg-gray-200 dark:text-gray-900"
+            >
+              {isDarkMode ? "Light Mode" : "Dark Mode"}
+            </button>
+            <button
+              onClick={() => setIsError(true)}
+              className="rounded bg-red-100 px-2 py-1 text-xs text-red-700"
+            >
+              Simulate Error
+            </button>
+          </div>
 
-      {/* Show previous search term using usePrevious custom hook */}
-      {previousSearch !== undefined && previousSearch !== searchTerm && (
-        <p>Previous search: "{previousSearch}"</p>
-      )}
+          {/* Search Input */}
+          <input
+            ref={searchInputRef}
+            value={searchTerm}
+            type="text"
+            placeholder="Search courses..."
+            onChange={handleSearchChange}
+            className="mb-4 w-full rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          />
 
-    
+          {/* Previous Search */}
+          {previousSearch !== undefined && previousSearch !== searchTerm && (
+            <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+              Previous search: "{previousSearch}"
+            </p>
+          )}
 
-      {/* User list for selection */}
-      {users.map((user) => (
-        <UserCard key={user.id} user={user} onSelect={setSelectedUser} />
-      ))}
+          {/* Toggle Button */}
+          <button
+            onClick={toggleDetails}
+            className="mb-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          >
+            {showDetails ? "Hide" : "Show"} Details
+          </button>
 
-      {/* Show selected user dynamically from state */}
-      {selectedUser && (
-        <p style={{ color: "blue" }}>Selected: {selectedUser.name}</p>
-      )}
+          {/* Responsive Grid */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/* User Cards */}
+            {users.map((user) => (
+              <UserCard
+                key={user.id}
+                user={user}
+                onSelect={setSelectedUser}
+              />
+            ))}
 
-      {/* Toggle button using useToggle custom hook */}
-      <button onClick={toggleDetails}>
-        {showDetails ? "Hide" : "Show"} Details
-      </button>
+            {/* Selected User */}
+            {selectedUser && (
+              <p className="col-span-full text-blue-600 dark:text-blue-400">
+                Selected: {selectedUser.name}
+              </p>
+            )}
 
-      {/* Render courses dynamically from state (not hard-coded) */}
-      {showDetails && filteredCourses.length > 0 ? (
-        filteredCourses.map((c) => (
-          <CourseCard key={c.code} course={c} />
-        ))
-      ) : (
-        <p>No courses found.</p>
-      )}
+            {/* Course Cards */}
+            {showDetails &&
+              filteredCourses.map((c) => (
+                <CourseCard key={c.code} course={c} variant="compact" />
+              ))}
 
-      {/* Render submission dynamically from state */}
-      {submission && (
-        <SubmissionBadge submission={submission}>
-          <p style={{ color: "green", fontWeight: "bold" }}>On time!</p>
-        </SubmissionBadge>
-      )}
-    </main>
+            {/* Submission Badge */}
+            {submission && (
+              <div className="col-span-full">
+                <SubmissionBadge submission={submission}>
+                  <p className="font-bold text-green-600 dark:text-green-400">
+                    On time!
+                  </p>
+                </SubmissionBadge>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -2,15 +2,32 @@ import type { Course } from "../types";
 
 interface CourseCardProps {
   course: Course;
+  variant?: "default" | "compact";
 }
 
-const CourseCard = ({ course }: CourseCardProps) => {
+const CourseCard = ({ course, variant = "default" }: CourseCardProps) => {
+  const isCompact = variant === "compact";
+
   return (
-    <section style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", margin: "1rem 0" }}>
-      <h3>{course.code}</h3>
-      <p>{course.title}</p>
-      <p>{course.units} units - {course.semester}</p>
-    </section>
+    <div
+      className={`rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800 dark:border-gray-700 ${
+        isCompact ? "p-3" : "p-5"
+      }`}
+    >
+      <h3
+        className={`font-bold text-gray-900 dark:text-white ${
+          isCompact ? "text-sm" : "text-lg"
+        }`}
+      >
+        {course.code}
+      </h3>
+      {!isCompact && (
+        <p className="text-gray-600 dark:text-gray-300">{course.title}</p>
+      )}
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        {course.units} units - {course.semester}
+      </p>
+    </div>
   );
 };
 
