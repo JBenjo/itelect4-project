@@ -15,25 +15,81 @@
 }
 
 :root {
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
+	--background: oklch(0.975 0.012 105);
+	--foreground: oklch(0.22 0.025 160);
+	--primary: oklch(0.46 0.13 155);
+	--primary-foreground: oklch(0.985 0.01 105);
+	--muted: oklch(0.94 0.018 105);
+	--muted-foreground: oklch(0.48 0.035 160);
+	--border: oklch(0.88 0.025 145);
+	--input: oklch(0.86 0.03 145);
+	--ring: oklch(0.62 0.13 155);
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--border: oklch(0.269 0 0);
-	--input: oklch(0.269 0 0);
-	--ring: oklch(0.556 0 0);
+	--background: oklch(0.17 0.025 160);
+	--foreground: oklch(0.95 0.018 105);
+	--primary: oklch(0.72 0.12 145);
+	--primary-foreground: oklch(0.18 0.025 160);
+	--muted: oklch(0.23 0.03 160);
+	--muted-foreground: oklch(0.75 0.025 105);
+	--border: oklch(0.32 0.035 160);
+	--input: oklch(0.34 0.04 160);
+	--ring: oklch(0.7 0.12 145);
+}
+
+* {
+	border-color: var(--border);
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	background:
+		radial-gradient(circle at 85% 0%, color-mix(in oklab, var(--primary) 12%, transparent), transparent 28rem),
+		linear-gradient(135deg, color-mix(in oklab, var(--background) 94%, var(--primary)), var(--background));
+	color: var(--foreground);
+	font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select {
+	font: inherit;
+}
+
+.app-nav {
+	background: color-mix(in oklab, var(--background) 88%, transparent);
+	backdrop-filter: blur(16px);
+	box-shadow: 0 1px 0 color-mix(in oklab, var(--border) 80%, transparent), 0 12px 30px color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+.app-brand {
+	letter-spacing: -0.03em;
+}
+
+.app-brand-mark {
+	background: var(--primary);
+	box-shadow: 0 0 0 5px color-mix(in oklab, var(--primary) 13%, transparent);
+}
+
+.app-main {
+	margin: 0 auto;
+	max-width: 1180px;
+	padding: 2.5rem 1.5rem 5rem;
+}
+
+.page-heading {
+	letter-spacing: -0.045em;
+}
+
+.surface {
+	background: color-mix(in oklab, var(--background) 90%, white 10%);
+	box-shadow: 0 14px 35px color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+
+@media (max-width: 640px) {
+	.app-main {
+		padding: 1.5rem 1rem 4rem;
+	}
 }

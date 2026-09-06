@@ -10,21 +10,21 @@ const CourseCard = ({ course, variant = "default" }: CourseCardProps) => {
 
   return (
     <div
-      className={`rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800 dark:border-gray-700 ${
+      className={`surface rounded-2xl border transition duration-200 hover:-translate-y-1 hover:shadow-lg ${
         isCompact ? "p-3" : "p-5"
       }`}
     >
       <h3
-        className={`font-bold text-gray-900 dark:text-white ${
+        className={`font-bold text-foreground ${
           isCompact ? "text-sm" : "text-lg"
         }`}
       >
         {course.code}
       </h3>
       {!isCompact && (
-        <p className="text-gray-600 dark:text-gray-300">{course.title}</p>
+        <p className="text-muted-foreground">{course.title}</p>
       )}
-      <p className="text-sm text-gray-500 dark:text-gray-400">
+      <p className="text-sm text-muted-foreground">
         {course.units} units - {course.semester}
       </p>
     </div>
