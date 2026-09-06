@@ -1,14 +1,35 @@
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
+import type { Course } from "../types";
+import { Input } from "@/components/ui/input";
 import CourseCard from "../components/CourseCard";
-import { allCourses } from "../data/mockData";
 import usePrevious from "../hooks/usePrevious";
+import useUiStore from "../store/ui-store";
+import { fetchCourses } from "../api/client";
 
 export default function CoursesPage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { data, isPending, isError, error } = useQuery<Course[]>({
+    queryKey: ["courses"],
+    queryFn: fetchCourses,
+  });
+
+  const searchTerm = useUiStore((state) => state.searchTerm);
+  const setSearchTerm = useUiStore((state) => state.setSearchTerm);
   const prevSearch = usePrevious(searchTerm);
 
-  const filteredCourses = allCourses.filter((course) => {
+  if (isPending) {
+    return <div className="animate-pulse p-6">Loading courses...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="rounded-lg bg-red-50 p-4 text-red-700">
+        {error.message} - is json-server running on port 3001?
+      </div>
+    );
+  }
+
+  const filteredCourses = data.filter((course) => {
     const term = searchTerm.toLowerCase();
     return (
       course.title.toLowerCase().includes(term) ||
@@ -21,14 +42,14 @@ export default function CoursesPage() {
       <h1 className="text-3xl font-bold mb-6">Courses</h1>
       
       <div className="mb-6">
-        <input
+        <Input
           type="text"
           placeholder="Search courses by title or code..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-800"
         />
-        {prevSearch && prevSearch !== searchTerm && (
+        {prevSearch !== undefined && prevSearch !== searchTerm && (
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
             Showing results for: {searchTerm || "all courses"}
           </p>

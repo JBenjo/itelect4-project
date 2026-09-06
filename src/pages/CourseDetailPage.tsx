@@ -1,17 +1,27 @@
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router";
+import type { Course } from "../types";
 import CourseCard from "../components/CourseCard";
-import { allCourses } from "../data/mockData";
+import { fetchCourseByCode } from "../api/client";
 
 function CourseDetailPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
 
-  const course = allCourses.find((c) => c.code === code);
+  const { data, isPending, isError, error } = useQuery<Course>({
+    queryKey: ["courses", code],
+    queryFn: () => fetchCourseByCode(code!),
+    enabled: code !== undefined,
+  });
 
-  if (course === undefined) {
+  if (isPending) {
+    return <div className="animate-pulse p-6">Loading course...</div>;
+  }
+
+  if (isError) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-700">
-        No course found with code "{code}".
+        {error.message}
       </div>
     );
   }
@@ -19,11 +29,11 @@ function CourseDetailPage() {
   return (
     <div>
       <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-        {course.title}
+        {data.title}
       </h2>
 
       <div className="max-w-sm">
-        <CourseCard course={course} />
+        <CourseCard course={data} />
       </div>
 
       <button

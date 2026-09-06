@@ -1,0 +1,51 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "code": "ITELECT4",
+      "title": "IT Elective 4",
+      "units": 3,
+      "semester": "1st Semester 2026-2027"
+    },
+    {
+      "id": "2",
+      "code": "ITELECT3",
+      "title": "IT Elective 3",
+      "units": 3,
+      "semester": "2nd Semester 2025-2026"
+    },
+    {
+      "id": "3",
+      "code": "CSSWENG",
+      "title": "Software Engineering",
+      "units": 3,
+      "semester": "1st Semester 2026-2027"
+    }
+  ],
+  "submissions": [
+    {
+      "id": "1",
+      "studentId": 1,
+      "courseCode": "ITELECT4",
+      "repoUrl": "https://github.com/JBenjo/ITELECT4",
+      "submittedAt": "2026-08-15T10:00:00.000Z",
+      "score": 100
+    },
+    {
+      "id": "2",
+      "studentId": 1,
+      "courseCode": "CSSWENG",
+      "repoUrl": "https://github.com/JBenjo/CSSWENG",
+      "submittedAt": "2026-08-16T10:00:00.000Z",
+      "score": 95
+    },
+    {
+      "studentId": 1,
+      "courseCode": "ITELECT4",
+      "repoUrl": "https://github.com/JBenjo/ITELECT4",
+      "submittedAt": "2026-09-06T03:43:57.533Z",
+      "id": "ciBTXSJfse4"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

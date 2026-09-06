@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuthStore } from "../store/authStore";
 
 function LoginPage() {
@@ -19,20 +22,21 @@ function LoginPage() {
         Login
       </h2>
 
-      <input
+      <Label htmlFor="name">Your name</Label>
+      <Input
+        id="name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Your name"
-        className="w-full rounded border border-gray-300 p-2"
+        placeholder="Juan dela Cruz"
       />
 
-      <button
+      <Button
         onClick={handleLogin}
         disabled={name === ""}
-        className="mt-3 rounded bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:bg-gray-400"
+        className="mt-3"
       >
         Log In
-      </button>
+      </Button>
     </div>
   );
 }
