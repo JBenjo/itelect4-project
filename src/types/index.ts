@@ -23,6 +23,13 @@ export interface Submission {
   score?: number;
 }
 
+export type ApiSubmission = Omit<Submission, "id" | "submittedAt"> & {
+  id: string;
+  submittedAt: string;
+};
+
+export type NewSubmission = Omit<ApiSubmission, "id">;
+
 export interface GreetingProps {
   name: string;
   age?: number;

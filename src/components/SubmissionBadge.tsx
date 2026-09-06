@@ -1,7 +1,7 @@
-import type { Submission } from "../types";
+import type { ApiSubmission } from "../types";
 
 interface SubmissionBadgeProps {
-  submission: Submission;
+  submission: ApiSubmission;
   children?: React.ReactNode;
 }
 
