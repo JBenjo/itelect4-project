@@ -22,10 +22,18 @@ function Layout() {
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <nav className="flex flex-wrap items-center gap-2 border-b border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-          <span className="mr-4 font-bold text-gray-900 dark:text-white">
-            Submission Tracker
+      <div className="min-h-screen bg-transparent">
+        <nav className="app-nav sticky top-0 z-20 flex flex-wrap items-center gap-2 border-b p-4">
+          <span className="app-brand mr-3 flex items-center gap-3 font-bold text-foreground">
+            <span className="app-brand-mark grid size-9 place-items-center rounded-xl text-sm text-primary-foreground">
+              ST
+            </span>
+            <span>
+              Submission Tracker
+              <small className="mt-0.5 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                ITELECT4 workspace
+              </small>
+            </span>
           </span>
 
           <NavLink to="/" end className={linkClass}>
@@ -47,7 +55,7 @@ function Layout() {
           ) : (
             <button
               onClick={logout}
-              className="rounded px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300"
+                className="rounded px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
             >
               Logout ({userName})
             </button>
@@ -55,13 +63,13 @@ function Layout() {
 
           <button
             onClick={toggleDarkMode}
-            className="ml-auto rounded bg-gray-800 px-3 py-1.5 text-sm text-white dark:bg-gray-200 dark:text-gray-900"
+            className="ml-auto rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground shadow-sm transition hover:-translate-y-0.5 hover:bg-muted"
           >
             {isDarkMode ? "Light Mode" : "Dark Mode"}
           </button>
         </nav>
 
-        <main className="p-6">
+        <main className="app-main">
           <Outlet />
         </main>
       </div>

@@ -38,16 +38,24 @@ export default function CoursesPage() {
   });
 
   return (
-    <div className="py-8">
-      <h1 className="text-3xl font-bold mb-6">Courses</h1>
+    <div className="space-y-7">
+      <div>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          Your semester
+        </p>
+        <h1 className="page-heading text-4xl font-bold text-foreground">Courses</h1>
+        <p className="mt-2 text-muted-foreground">
+          Browse your enrolled subjects and open a course for its details.
+        </p>
+      </div>
       
-      <div className="mb-6">
+      <div className="surface rounded-2xl border p-4">
         <Input
           type="text"
           placeholder="Search courses by title or code..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-800"
+          className="w-full"
         />
         {prevSearch !== undefined && prevSearch !== searchTerm && (
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
@@ -56,7 +64,7 @@ export default function CoursesPage() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filteredCourses.map((course) => (
           <Link key={course.code} to={`/courses/${course.code}`}>
             <CourseCard course={course} />
