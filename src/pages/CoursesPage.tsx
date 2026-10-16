@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import CourseCard from "../components/CourseCard";
 import usePrevious from "../hooks/usePrevious";
 import useUiStore from "../store/ui-store";
-import { fetchCourses } from "../api/client";
+import { API_URL, fetchCourses } from "../api/client";
 
 export default function CoursesPage() {
   const { data, isPending, isError, error } = useQuery<Course[]>({
@@ -24,7 +24,7 @@ export default function CoursesPage() {
   if (isError) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-700">
-        {error.message} - is json-server running on port 3001?
+        {error.message} -- tried {API_URL}/api/courses
       </div>
     );
   }

@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit",
-    "api": "json-server db.json --port 3001"
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.102.8",
@@ -16,18 +15,23 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "json-server": "^1.0.0-beta.15",
     "typescript": "^5.3.3",
-    "vite": "^5.0.8"
+    "vite": "^8.3.4"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@hookform/resolvers": "^5.9.1",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-query": "^5.102.8",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.41.0",
+    "mongoose": "^9.11.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-hook-form": "^7.87.0",
