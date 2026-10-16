@@ -2,6 +2,11 @@
 
 Vite + React + TypeScript demo for ITELECT4.
 
+## Live
+
+- **Frontend:** https://itelect4-project-three.vercel.app
+- **Backend:** https://itelect4-backend-nine.vercel.app
+
 ## Project structure
 
 - `index.html` — Vite HTML entry point
