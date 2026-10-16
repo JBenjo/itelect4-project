@@ -2,11 +2,13 @@ import type { ApiSubmission } from "../types";
 
 interface SubmissionBadgeProps {
   submission: ApiSubmission;
+  onViewDetails?: () => void;
   children?: React.ReactNode;
 }
 
 const SubmissionBadge: React.FC<SubmissionBadgeProps> = ({
   submission,
+  onViewDetails,
   children,
 }) => {
   return (
@@ -31,7 +33,18 @@ const SubmissionBadge: React.FC<SubmissionBadgeProps> = ({
       <p className="text-gray-600 dark:text-gray-300">
         Score: {submission.score ?? "Pending"}
       </p>
-      {children && <div className="mt-2">{children}</div>}
+      {children && onViewDetails && (
+        <button
+          type="button"
+          onClick={onViewDetails}
+          className="mt-2 text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+        >
+          {children}
+        </button>
+      )}
+      {children && !onViewDetails && (
+        <div className="mt-2">{children}</div>
+      )}
     </div>
   );
 };

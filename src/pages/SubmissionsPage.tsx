@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +10,11 @@ import SubmissionBadge from "@/components/SubmissionBadge";
 import { createSubmission, fetchCourses, fetchSubmissions } from "@/api/client";
 import type { ApiSubmission, Course } from "@/types";
 import { submissionSchema, type SubmissionFormValues } from "@/schemas/submissionSchema";
-import { useAuthStore } from "@/store/authStore";
+import useAuthStore from "@/store/authStore";
 
 export default function SubmissionsPage() {
   const { userName } = useAuthStore();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data, isPending, isError, error } = useQuery<ApiSubmission[]>({
     queryKey: ["submissions"],
@@ -46,12 +48,7 @@ export default function SubmissionsPage() {
   });
 
   const onSubmit = (values: SubmissionFormValues): void => {
-    addSubmission.mutate({
-      studentId: 1,
-      courseCode: values.courseCode,
-      repoUrl: values.repoUrl,
-      submittedAt: new Date().toISOString(),
-    });
+    addSubmission.mutate(values);
   };
 
   if (isPending || courses.isPending) {
@@ -61,8 +58,7 @@ export default function SubmissionsPage() {
   if (isError || courses.isError) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-700">
-        {isError ? error.message : courses.error?.message} - is json-server
-        running on port 3001?
+        {isError ? error.message : courses.error?.message}
       </div>
     );
   }
@@ -132,7 +128,11 @@ export default function SubmissionsPage() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {data.map((submission) => (
-          <SubmissionBadge key={submission.id} submission={submission}>
+          <SubmissionBadge
+            key={submission.id}
+            submission={submission}
+            onViewDetails={() => navigate(`/submissions/${submission.id}`)}
+          >
             View Details
           </SubmissionBadge>
         ))}

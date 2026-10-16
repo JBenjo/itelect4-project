@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router";
 import useUiStore from "../store/ui-store";
-import { useAuthStore } from "../store/authStore";
+import useAuthStore from "../store/authStore";
 
 function Layout() {
   const isDarkMode = useUiStore((state) => state.isDarkMode);
@@ -49,9 +49,12 @@ function Layout() {
           </NavLink>
 
           {userName === null ? (
-            <NavLink to="/login" className={linkClass}>
-              Login
-            </NavLink>
+            <>
+              <NavLink to="/login" className={linkClass}>Login</NavLink>
+              <NavLink to="/register" className={linkClass}>
+                Register
+              </NavLink>
+            </>
           ) : (
             <button
               onClick={logout}
