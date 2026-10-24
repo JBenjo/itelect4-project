@@ -95,3 +95,15 @@ export const enum Role {
   Admin = "admin",
   Instructor = "instructor",
 }
+
+// ===== SESSION 11: what POST /api/ai sends back =======================
+// The fourth time a shape is copied across the two repos, and the
+// same rule as the first three: itelect4-backend's Review type is
+// derived from a Zod schema in src/schemas/review.ts, and this has
+// to say the same thing. Nothing checks that they agree -- you do.
+export interface AiReview {
+  summary:      string;
+  strengths:    string[];
+  improvements: string[];
+  readiness:    "ready" | "almost" | "not-yet";
+}

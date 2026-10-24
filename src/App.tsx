@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
 import SubmissionDetailPage from "./pages/SubmissionDetailPage";
+import ReviewPage from "./pages/ReviewPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
             path="submissions/:id"
             element={<SubmissionDetailPage />}
           />
+          {/* Session 11: behind the same guard -- the API refuses it
+              without a token anyway, so the page should not offer it. */}
+          <Route path="review" element={<ReviewPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
