@@ -1,11 +1,19 @@
+// A user shown as a profile card, with a button that hands the whole
+// user object back to whoever rendered the card. It is controlled:
+// this component never decides what happens after a click -- the
+// parent passes onSelect and does that itself.
 import type { User } from "../types";
 
 interface UserCardProps {
   user: User;
+  // Called with this card's user when "Select User" is pressed.
   onSelect: (user: User) => void;
 }
 
 const UserCard = ({ user, onSelect }: UserCardProps) => {
+  // e.preventDefault() guards against the button sitting inside a
+  // <form>: without it the browser would also submit that form. Then
+  // pass this user up to the parent.
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     onSelect(user);
@@ -17,6 +25,8 @@ const UserCard = ({ user, onSelect }: UserCardProps) => {
         <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
           Profile
         </span>
+        {/* Green dot = active account; the title attribute explains it
+            on hover for anyone who cannot rely on the colour. */}
         <span className="size-3 rounded-full bg-emerald-500" title="Active" />
       </div>
       <h3 className="text-xl font-bold text-foreground">
@@ -26,6 +36,8 @@ const UserCard = ({ user, onSelect }: UserCardProps) => {
       <p className="mt-5 text-sm text-muted-foreground">
         Role: {user.role}
       </p>
+      {/* isActive is a boolean in the type, so it is translated into
+          the word a person reads on the screen. */}
       <p className="text-sm text-muted-foreground">
         Status: {user.isActive ? "Active" : "Inactive"}
       </p>
