@@ -23,12 +23,17 @@ const UserCard = ({ user, onSelect, isSelected = false }: UserCardProps) => {
   };
 
   return (
-    // The ring and border only appear while isSelected is true. The
-    // template literal is enough here: two class strings, one of which
-    // is empty, so no Tailwind conflict to resolve.
+    // The outline and tint only appear while isSelected is true. An
+    // outline is used instead of a ring because .surface in index.css
+    // already sets box-shadow, and a ring is also a box-shadow -- the
+    // plain CSS class would win and the highlight would be invisible.
+    // (border-primary is avoided for the same reason: the `*` rule in
+    // index.css sets border-color and beats every utility.)
     <div
       className={`surface rounded-2xl border p-6 transition ${
-        isSelected ? "border-primary ring-2 ring-primary" : ""
+        isSelected
+          ? "bg-primary/10 outline-2 outline-offset-2 outline-primary"
+          : ""
       }`}
     >
       <div className="mb-5 flex items-start justify-between">
