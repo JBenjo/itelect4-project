@@ -2,7 +2,7 @@
 // submission itself, and the course list -- the second only to show
 // the course's title and units next to the submission's course code.
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { fetchCourses, fetchSubmissionById } from "@/api/client";
 import useAuthStore from "@/store/authStore";
@@ -10,6 +10,9 @@ import useAuthStore from "@/store/authStore";
 export default function SubmissionDetailPage() {
   // The ":id" segment of /submissions/:id, read straight from the URL.
   const { id } = useParams<{ id: string }>();
+  // navigate() is the programmatic version of <Link>: the back button
+  // below uses it to return to the list.
+  const navigate = useNavigate();
   // The logged-in student's name, for the welcome line. Reading it
   // here (instead of passing it down) is what the auth store is for.
   const { userName } = useAuthStore();
@@ -29,19 +32,40 @@ export default function SubmissionDetailPage() {
     queryFn: fetchCourses,
   });
 
+  // One button, built once and printed in all three states below --
+  // so the student can leave the page even while it is loading or
+  // when the submission failed to load. navigate() changes the URL
+  // without a full reload, exactly like <Link>.
+  const backButton = (
+    <button
+      onClick={() => navigate("/submissions")}
+      className="mb-6 rounded-lg border border-border bg-background px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:-translate-y-0.5 hover:bg-muted"
+    >
+      &larr; Back to Submissions
+    </button>
+  );
+
   // Both queries must be settled before anything below runs.
   if (submissionQuery.isPending || coursesQuery.isPending) {
-    return <div className="animate-pulse p-6">Loading submission...</div>;
+    return (
+      <div className="py-8">
+        {backButton}
+        <div className="animate-pulse p-6">Loading submission...</div>
+      </div>
+    );
   }
 
   if (submissionQuery.isError || coursesQuery.isError) {
     return (
-      <div className="rounded-lg bg-red-50 p-4 text-red-700">
-        {/* Whichever query failed, show its message; fall back to a
-            generic sentence if somehow neither has one. */}
-        {(submissionQuery.isError
-          ? submissionQuery.error.message
-          : coursesQuery.error?.message) || "Failed to load"}
+      <div className="py-8">
+        {backButton}
+        <div className="rounded-lg bg-red-50 p-4 text-red-700">
+          {/* Whichever query failed, show its message; fall back to a
+              generic sentence if somehow neither has one. */}
+          {(submissionQuery.isError
+            ? submissionQuery.error.message
+            : coursesQuery.error?.message) || "Failed to load"}
+        </div>
       </div>
     );
   }
@@ -55,6 +79,7 @@ export default function SubmissionDetailPage() {
 
   return (
     <div className="py-8">
+      {backButton}
       <h1 className="mb-2 text-3xl font-bold">Submission Details</h1>
       <p className="mb-6 text-gray-600 dark:text-gray-400">
         Welcome, {userName}!
